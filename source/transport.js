@@ -2,6 +2,8 @@ var mandrill = require('node-mandrill');
 var twilio = require('twilio');
 var gcm = require('node-gcm');
 var apn = require('apn');
+var nodemailer = require('nodemailer');
+
 var logger = require('./utils/logger');
 var config = require('../config');
 
@@ -160,11 +162,44 @@ var setupIOSPushNotification = function () {
 	}
 };
 
+var setupNodeMailer = function () {
+
+    function push(options, callback) {
+        console.log("nodemailer.push:options: ", options);
+
+        var mailOptions = {
+            from: '"Account Service" <passwordservices@datacomms.net',
+            to: options.action.user, // email address
+            subject: 'User Account Validation',
+            text: options.content,
+            html: options.content
+        };
+
+        var transporter = nodemailer.createTransport(config.nodemailer);
+
+        // send mail with defined transport object
+        transporter.sendMail(mailOptions, function(error, info) {
+            if (error) {
+                console.log(error);
+            } else {
+                console.log('Message sent: ' + info.response);
+            }
+        });
+
+        return callback(null);
+    }
+
+    return {
+    	push: push
+    };
+};
+
 var transport = {
 	mandrill: setupMandrill(),
 	twilio: setupTwilio(),
 	android: setupAndroidPushNotification(),
-	ios: setupIOSPushNotification()
+	ios: setupIOSPushNotification(),
+	nodemailer: setupNodeMailer()
 };
 
 module.exports = transport;
