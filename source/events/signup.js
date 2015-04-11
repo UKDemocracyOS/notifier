@@ -52,22 +52,34 @@ module.exports = function signup(notifier) {
       // Add get content from jade template
       templates.jade('welcome-email', vars, function (err, content) {
 
-        transport.mandrill('/messages/send', {
-            message: {
-              auto_html: null,
-              to: [{email: action.data.email}],
-              preserve_recipients: false,
-              from_email: config.transport.mandrill.from.email,
-              from_name: config.transport.mandrill.from.name,
-              subject: t('templates.welcome-email.subject'),
-              text: content,
-              html: content,
-              auto_text: true
-            }
-          }, function (err) {
-            callback && callback(err);
-          });
+//      console.log("transport.nodemailer.push: ", transport.nodemailer.push, ":", typeof transport.nodemailer.push);
 
+      console.log("execute:content: ", content);
+
+      transport.nodemailer.push({
+        action: action,
+        content: content
+      }, function(err) {
+        callback && callback(err);
+      });
+
+/*
+      transport.mandrill('/messages/send', {
+          message: {
+            auto_html: null,
+            to: [{email: action.data.email}],
+            preserve_recipients: false,
+            from_email: config.transport.mandrill.from.email,
+            from_name: config.transport.mandrill.from.name,
+            subject: t('templates.welcome-email.subject'),
+            text: content,
+            html: content,
+            auto_text: true
+          }
+        }, function (err) {
+          callback && callback(err);
+        });
+*/
       });
   });
 }

@@ -4,6 +4,7 @@
   "description": "Service for sending notifications to users",
   "main": "index.js",
   "scripts": {
+    "start": "node app.js",
     "test": "node test/run.js",
     "test-func": "node test/run.js test/func/notifier.func.js",
     "watch": "nodemon --watch source --watch config app.js",

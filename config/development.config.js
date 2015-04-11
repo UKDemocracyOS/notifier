@@ -4,7 +4,7 @@ var config = {
 	port: 9001,
 
 	db: {
-		connection: 'mongodb://localhost/DemocracyOS-dev',
+		connection: 'mongodb://localhost/DemocracyOS-devel-demo2',
 		aliases: {
 			user: 'users'
 		}
@@ -39,6 +39,21 @@ var config = {
 		apn : {
 			cert: 'fake-cert-path',
 			key: 'fake-key-path'
+		},
+		nodemailer: {
+			mail: {
+			    port: 25,
+			    host: "relay.plus.net",
+			    secure: false,
+			    auth: {
+			        user: 'runwithwolves',
+			        pass: 'alltogethernow'
+			    }
+			},
+			from: {
+				email: 'no-reply@democracyos.uk',
+				name: 'UKDemocracyOS'
+			}
 		}
 	},
 
