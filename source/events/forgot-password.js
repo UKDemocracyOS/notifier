@@ -48,22 +48,30 @@ module.exports = function signup(notifier) {
       // Add get content from jade template
       templates.jade('forgot-password', vars, function (err, content) {
 
-        transport.mandrill('/messages/send', {
-            message: {
-              auto_html: null,
-              to: [{email: action.data.email}],
-              preserve_recipients: false,
-              from_email: config.transport.mandrill.from.email,
-              from_name: config.transport.mandrill.from.name,
-              subject: t('templates.forgot-password.subject'),
-              text: content,
-              html: content,
-              auto_text: true
-            }
-          }, function (err) {
-            callback && callback(err);
-          });
+      transport.nodemailer.push({
+        action: action,
+        content: content
+      }, function(err) {
+        callback && callback(err);
+      });
 
+/*
+      transport.mandrill('/messages/send', {
+          message: {
+            auto_html: null,
+            to: [{email: action.data.email}],
+            preserve_recipients: false,
+            from_email: config.transport.mandrill.from.email,
+            from_name: config.transport.mandrill.from.name,
+            subject: t('templates.forgot-password.subject'),
+            text: content,
+            html: content,
+            auto_text: true
+          }
+        }, function (err) {
+          callback && callback(err);
+        });
+*/
       });
   });
 }
